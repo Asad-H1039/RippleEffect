@@ -1,0 +1,30 @@
+version: "3"
+services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    env_file:
+      - .env
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/templates/init.conf.template:/etc/nginx/templates/init.conf.template
+      - ./docker/letsencrypt:/etc/letsencrypt
+      - ./docker/certbot/data:/var/www/certbot
+
+  certbot:
+    container_name: certbot
+    image: certbot/certbot:latest
+    env_file:
+      - .env
+    depends_on:
+      - nginx
+    command: >-
+      certonly --reinstall --webroot --webroot-path=/var/www/certbot
+      --email ${EMAIL} --agree-tos --no-eff-email
+      -d ${DOMAIN}
+    volumes:
+      - ./docker/letsencrypt:/etc/letsencrypt
+      - ./docker/certbot/data:/var/www/certbot
+

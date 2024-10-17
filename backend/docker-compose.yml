@@ -1,0 +1,75 @@
+version: "3.8"
+services:
+  django_app:
+    build:
+      context: django_app
+    command: /django_app/entrypoint.sh
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./django_app:/django_app
+      - static_volume:/django_app/staticfiles/
+      - media_volume:/django_app/media/
+
+  postgres:
+    image: "postgis/postgis:15-3.4"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - django_app
+    volumes:
+      - static_volume:/django_app/static/
+      - media_volume:/django_app/media/
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  celery-beat:
+    build:
+      context: ./django_app
+      dockerfile: Dockerfile
+    command: celery -A django_app beat --loglevel=info -S django
+    env_file:
+      - .env
+    volumes:
+      - ./django_app:/django_app
+      - static_volume:/django_app/static/
+      - media_volume:/django_app/media/
+    depends_on:
+      - redis
+      - postgres
+
+  celery-worker:
+    build:
+      context: ./django_app
+      dockerfile: Dockerfile
+    command: celery -A django_app worker --loglevel=info --scheduler django
+    env_file:
+      - .env
+    volumes:
+      - ./django_app:/django_app
+      - static_volume:/django_app/static/
+      - media_volume:/django_app/media/
+    depends_on:
+      - redis
+      - postgres
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
