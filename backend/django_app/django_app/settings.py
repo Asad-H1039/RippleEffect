@@ -8,8 +8,8 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
 
 #ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
-NGROK_INSTANCE = 'b5cd-111-88-217-5.ngrok-free.app'
-ALLOWED_HOSTS = [NGROK_INSTANCE,'b5cd-111-88-217-5.ngrok-free.app','192.168.100.135', 'localhost', '127.0.0.1']
+NGROK_INSTANCE = 'f373-111-88-217-31.ngrok-free.app'
+ALLOWED_HOSTS = [NGROK_INSTANCE,'192.168.100.135', 'localhost', '127.0.0.1']
 FRONTEND_URL = 'http://localhost:8000'
 #CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "https://81f2-39-50-179-122.ngrok-free.app").split(",")
 CSRF_TRUSTED_ORIGINS = ("https://"+NGROK_INSTANCE, "https://"+NGROK_INSTANCE+"/admin/login/")

@@ -11,14 +11,16 @@ class CategorySerializer(serializers.ModelSerializer):
 class ArticleListSerializer(serializers.ModelSerializer):
     language = serializers.CharField(source="language.name")
     category = serializers.CharField(source="category.name")
+    category_id = serializers.IntegerField(source="category.id")
+    
     class Meta:
         model = Article
-        fields = ("id", "title", "miniature", "description", "language", "category", "featured")
+        fields = ("id", "title", "miniature", "description", "language","category_id", "category", "featured", "attachment")
 
 class FeaturedArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ("id", "title", "miniature", "description", "language", "category", "featured")
+        fields = ("id", "title", "miniature", "description", "language", "category", "featured", "attachment")
 
 class ArticleDetailSerializer(serializers.ModelSerializer):
     class Meta:

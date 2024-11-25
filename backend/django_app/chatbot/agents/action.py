@@ -25,7 +25,7 @@ class ActionInput(BaseModel):
 
 
 class Action(dspy.Signature):
-    """Based on user input, select one of the possible action to perform"""
+    """Based on user input, select only one of the possible action to perform"""
 
     input: ActionInput = dspy.InputField()
     action_to_take = dspy.OutputField()
@@ -51,5 +51,5 @@ def action_market_database(user_message):
 possible_actions = {
     "Answer based on model basic": action_model_basic,
     "Answer based on agricultural course content": action_courses_database,
-    "Answer based on market price information": action_market_database,
+    #"Answer based on market price information": action_market_database,
 }

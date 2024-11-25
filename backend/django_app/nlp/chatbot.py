@@ -11,6 +11,7 @@ from qdrant_client import QdrantClient
 
 QDRANT_HOST = os.getenv("QDRANT_HOST")
 QDRANT_API_KEY = os.getenv("QDRANT_API_KEY")
+QDRANT_COLLECTION=os.getenv("QDRANT_COLLECTION")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL = os.getenv("OPENAI_MODEL")
 
@@ -54,7 +55,7 @@ class Chatbot:
 
     def _initialize_document_store(self):
         return Qdrant(
-            client=self.client, embeddings=self.embeddings, collection_name="tai-collection"
+            client=self.client, embeddings=self.embeddings, collection_name=QDRANT_COLLECTION
         )
 
     def _setup_condense_q_chain(self):

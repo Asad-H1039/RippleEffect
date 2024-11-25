@@ -29,6 +29,7 @@ def get_embeddings(question):
 
 def search_context(embedding):
     try:
+        print("searching vector")
         return client.search(collection_name=os.getenv("QDRANT_COLLECTION"), query_vector=embedding)
     except Exception as e:
         logger.error(f"Error searching context in Qdrant: {e}")
@@ -38,6 +39,7 @@ def search_context(embedding):
 def extract_context(question):
     embedding = get_embeddings(question)
     context = search_context(embedding)
+    print(context)
     return context
 
 
